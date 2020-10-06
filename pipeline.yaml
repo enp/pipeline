@@ -1,6 +1,7 @@
 - job:
     name: simple-pipeline
     project-type: pipeline
+    sandbox: false
     pipeline-scm:
       scm:
         - git:

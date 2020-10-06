@@ -1,0 +1,12 @@
+bigtop {
+  name = "example"
+  components {
+    "one" {
+      name = "one"
+    }
+    "two" {
+      name = "two"
+      requires = ["one"]
+    }
+  }
+}
