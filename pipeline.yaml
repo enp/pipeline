@@ -1,8 +1,7 @@
 - job:
     name: simple-pipeline
     project-type: pipeline
-    dsl: |
-      node {
-        sh 'pwd'
-        sh 'ls -l'
-      }
+    pipeline-scm:
+      scm:
+        - git:
+            url: https://github.com/enp/pipeline
