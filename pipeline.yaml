@@ -1,0 +1,8 @@
+- job:
+    name: simple-pipeline
+    project-type: pipeline
+    dsl: |
+      node {
+        sh 'pwd'
+        sh 'ls -l'
+      }
