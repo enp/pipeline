@@ -1,18 +1,22 @@
 node {
-    def tasks = tasks(readFile('bigtop.bom'))
-    echo "TASKS $tasks"
-    parallel tasks.collectEntries { name, task ->
-        [(name) : { -> return {
-                echo "PREPARE $name"
-                task.requires.each { req ->
-                    waitUntil { tasks[req].completed }
+    stage ('load') {
+        tasks = tasks(readFile('bigtop.bom'))
+    }
+    stage ('exec') {
+        parallel tasks.collectEntries { name, task ->
+            [(name) : { -> return {
+                    task.requires.each { req ->
+                        stage ("wait[$req]") {
+                            waitUntil { tasks[req].completed }
+                        }
+                    }
+                    stage ('exec') {
+                        sh "echo $name && sleep 1"
+                        task.completed = true
+                    }
                 }
-                echo "BEGIN $name"
-                sh script: "sleep 1"
-                task.completed = true
-                echo "END $name"
-            }
-        }(name)]
+            }(name)]
+        }
     }
 }
 
